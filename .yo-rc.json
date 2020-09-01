@@ -1,0 +1,38 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.boa.api"
+    },
+    "jhipsterVersion": "6.9.1",
+    "applicationType": "monolith",
+    "baseName": "WFCredit",
+    "packageName": "com.boa.api",
+    "packageFolder": "com/boa/api",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "oracle",
+    "prodDatabaseType": "oracle",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NjkyODBkZTJlYTU0NDYwOWMzY2M0OWFlY2JhNjkxNGJkMmE3ZDFjMWEyZDAxN2E5MzA3Mzk2YWJmNTE2NjhiMGRjZTVkMWY2Y2M0NDRmNjU4YWM5YWU1ODgxNWE5Y2Y4Y2Y0OGQ5ZGNiMTVkMWU2YTg3MTBmN2RkZjdiMzczNzg=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "creationTimestamp": 1598974674993,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}
