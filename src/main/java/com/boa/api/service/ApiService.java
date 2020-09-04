@@ -80,20 +80,26 @@ public class ApiService {
                 Map<String, Object> map = mapper.readValue(result, Map.class);
                 obj = new JSONObject(result);
                 genericResp.setDataRating(map);
-                if (obj.toString().contains("scode")&&obj.getJSONObject("data").getInt("scode")==200) {
+                if (obj.toString().contains("scode") && obj.getJSONObject("data").getInt("scode") == 200) {
                     genericResp.setCode(ICodeDescResponse.SUCCES_CODE);
                     genericResp.setDescription(ICodeDescResponse.SUCCES_DESCRIPTION);
                     genericResp.setDateResponse(Instant.now());
                     tracking = createTracking(tracking, ICodeDescResponse.SUCCES_CODE, request.getRequestURI(),
                             genericResp.toString(), ratingRequest.toString(), genericResp.getResponseReference());
-                } else if(obj.toString().contains("scode")&&obj.getJSONObject("data").getInt("scode")==301) {
+                } else if (obj.toString().contains("scode") && obj.getJSONObject("data").getInt("scode") == 301) {
                     genericResp.setCode(ICodeDescResponse.CLIENT_ABSENT_CODE);
                     genericResp.setDateResponse(Instant.now());
                     genericResp.setDescription(ICodeDescResponse.CLIENT_NON_TROUVE);
-                    tracking = createTracking(tracking, ICodeDescResponse.ECHEC_CODE, request.getRequestURI(), result,
-                    ratingRequest.toString(), genericResp.getResponseReference());
+                    tracking = createTracking(tracking, ICodeDescResponse.CLIENT_ABSENT_CODE, request.getRequestURI(), result,
+                            ratingRequest.toString(), genericResp.getResponseReference());
+                } else {
+                    genericResp.setCode(ICodeDescResponse.ECHEC_CODE);
+                    genericResp.setDateResponse(Instant.now());
+                    genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION);
+                    tracking = createTracking(tracking, ICodeDescResponse.ECHEC_CODE, request.getRequestURI(),
+                            genericResp.toString(), ratingRequest.toString(), genericResp.getResponseReference());
                 }
-            }else {
+            } else {
                 br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 String ligne = br.readLine();
                 while (ligne != null) {
@@ -117,9 +123,9 @@ public class ApiService {
             log.error("Exception in byRefRequest [{}]", e);
             genericResp.setCode(ICodeDescResponse.ECHEC_CODE);
             genericResp.setDateResponse(Instant.now());
-            genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION+" "+e.getMessage());
+            genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION + " " + e.getMessage());
             tracking = createTracking(tracking, ICodeDescResponse.ECHEC_CODE, request.getRequestURI(), e.getMessage(),
-            ratingRequest.toString(), genericResp.getResponseReference());
+                    ratingRequest.toString(), genericResp.getResponseReference());
         }
         trackingService.save(tracking);
         return genericResp;
