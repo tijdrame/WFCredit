@@ -144,7 +144,7 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: WFCredit@localhost
+    from: boa@boaholding.com
   swagger:
     default-include-pattern: /api/.*
     title: WFCredit API
@@ -152,9 +152,9 @@ jhipster:
     version: 0.0.1
     terms-of-service-url:
     contact-name:
-    contact-url:
+    contact-url: https://www.bank-of-africa.net/
     contact-email:
-    license:
+    license: BOA Services Internationales
     license-url:
 # ===================================================================
 # Application specific properties
