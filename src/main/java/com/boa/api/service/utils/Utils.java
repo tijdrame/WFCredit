@@ -40,6 +40,8 @@ public class Utils {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", appType);
+            conn.setConnectTimeout(5000);//5000 ms <=> 5s
+            conn.setReadTimeout(5000);//5000 ms <=> 5s
             if(StringUtils.isEmpty(appRetour))  conn.setRequestProperty("Accept", appRetour);
 			
 			//tracking.setRequestTr(jsonString);
@@ -55,14 +57,19 @@ public class Utils {
         return conn;
     }
 
-    public ResponseEntity<String> doRestTemplate(String request, String endPoint) {
+    public ResponseEntity<String> doRestTemplate(String endPoint, String params, String appType,
+    String appRetour, Boolean withAuthorization) {
         HttpHeaders headers = new HttpHeaders();
-      headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        MediaType contentType = appType.equalsIgnoreCase("json")?MediaType.APPLICATION_JSON:MediaType.APPLICATION_XML;
+        headers.setContentType(contentType);
+        MediaType acceptType = (appType!=null && appType.equalsIgnoreCase("json"))?MediaType.APPLICATION_JSON:MediaType.APPLICATION_XML;
+      headers.setAccept(Arrays.asList(acceptType));
       GenericResponse gResponse = new GenericResponse();
       gResponse.setCode("200");
       HttpEntity<GenericResponse> entity = new HttpEntity<GenericResponse>(gResponse,headers);
       
-        return new RestTemplate()
+        ResponseEntity<String> result =new RestTemplate()
         .exchange(endPoint, HttpMethod.POST, entity, String.class);
+        return result;
     }
 }
