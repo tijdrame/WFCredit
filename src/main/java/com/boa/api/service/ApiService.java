@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -173,15 +174,20 @@ public class ApiService {
                         Map<String, Object> map = mapper.readValue(result, Map.class);
                         obj = new JSONObject(result);
                         genericResp.setDataSignaletique(map);
+                        
                         if (obj.toString().contains("RCOD") && 
-                        obj.getJSONObject("dmrt_signaletique_details").getJSONObject("client").getString("RCOD").equals("0412")) {
+                        (obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONObject && obj.getJSONObject("dmrt_signaletique_details").getJSONObject("client").getString("RCOD").equals("0412")||
+                        obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONArray && obj.getJSONObject("dmrt_signaletique_details").getJSONArray("client").getJSONObject(0).getString("RCOD").equals("0412"))
+                        ) {
                             genericResp.setCode(ICodeDescResponse.SUCCES_CODE);
                             genericResp.setDescription(ICodeDescResponse.SUCCES_DESCRIPTION);
                             genericResp.setDateResponse(Instant.now());
                             tracking = createTracking(tracking, ICodeDescResponse.SUCCES_CODE, request.getRequestURI(),
                                     genericResp.toString(), signaletiqueRequest.toString(), genericResp.getResponseReference());
                         } else if (obj.toString().contains("RCOD") && 
-                        obj.getJSONObject("dmrt_signaletique_details").getJSONObject("client").getString("RCOD").equals("0413")) {
+                        (obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONObject && obj.getJSONObject("dmrt_signaletique_details").getJSONObject("client").getString("RCOD").equals("0413")||
+                        obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONArray && obj.getJSONObject("dmrt_signaletique_details").getJSONArray("client").getJSONObject(0).getString("RCOD").equals("0413"))
+                        ) {
                             genericResp.setCode(ICodeDescResponse.CLIENT_ABSENT_CODE);
                             genericResp.setDateResponse(Instant.now());
                             genericResp.setDescription(ICodeDescResponse.CLIENT_NON_TROUVE);
