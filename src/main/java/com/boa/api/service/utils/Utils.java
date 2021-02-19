@@ -40,8 +40,8 @@ public class Utils {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", appType);
-            conn.setConnectTimeout(5000);//5000 ms <=> 5s
-            conn.setReadTimeout(5000);//5000 ms <=> 5s
+            conn.setConnectTimeout(8000);//5000 ms <=> 5s
+            conn.setReadTimeout(8000);//5000 ms <=> 5s
             if(StringUtils.isEmpty(appRetour))  conn.setRequestProperty("Accept", appRetour);
 			
 			//tracking.setRequestTr(jsonString);
