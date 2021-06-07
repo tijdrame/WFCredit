@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 
+import com.boa.api.config.ApplicationProperties;
 import com.boa.api.response.GenericResponse;
 
 import org.slf4j.Logger;
@@ -23,7 +24,11 @@ import org.springframework.web.client.RestTemplate;
 public class Utils {
 
     private final Logger log = LoggerFactory.getLogger(Utils.class);
+    private final ApplicationProperties applicationProperties;
 
+    public Utils(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
+    }
     /*
      * private final Random RANDOM = new SecureRandom(); public String getRandomId
      * (){ return RandomStringUtils.randomAlphanumeric(16); }
@@ -40,8 +45,8 @@ public class Utils {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", appType);
-            conn.setConnectTimeout(8000);//5000 ms <=> 5s
-            conn.setReadTimeout(8000);//5000 ms <=> 5s
+            conn.setConnectTimeout(applicationProperties.getTimeOut());//5000 ms <=> 5s
+            conn.setReadTimeout(applicationProperties.getTimeOut());//5000 ms <=> 5s
             if(StringUtils.isEmpty(appRetour))  conn.setRequestProperty("Accept", appRetour);
 			
 			//tracking.setRequestTr(jsonString);

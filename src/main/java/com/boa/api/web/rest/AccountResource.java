@@ -138,6 +138,7 @@ public class AccountResource {
      */
     @PostMapping(path = "/account/change-password")
     public void changePassword(@RequestBody PasswordChangeDTO passwordChangeDto) {
+        log.info("PasswordChangeDTO [{}, {}]", passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
         if (!checkPasswordLength(passwordChangeDto.getNewPassword())) {
             throw new InvalidPasswordException();
         }
