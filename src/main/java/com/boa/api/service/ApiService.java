@@ -175,18 +175,16 @@ public class ApiService {
                         obj = new JSONObject(result);
                         genericResp.setDataSignaletique(map);
                         
-                        if (obj.toString().contains("RCOD") && 
-                        (obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONObject && obj.getJSONObject("dmrt_signaletique_details").getJSONObject("client").getString("RCOD").equals("0412")||
-                        obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONArray && obj.getJSONObject("dmrt_signaletique_details").getJSONArray("client").getJSONObject(0).getString("RCOD").equals("0412"))
+                        if (obj.toString().contains("RCOD") && !obj.getJSONObject("data").isNull("RCOD") && 
+                        (obj.getJSONObject("data").getString("RCOD").equals("0412"))
                         ) {
                             genericResp.setCode(ICodeDescResponse.SUCCES_CODE);
                             genericResp.setDescription(ICodeDescResponse.SUCCES_DESCRIPTION);
                             genericResp.setDateResponse(Instant.now());
                             tracking = createTracking(tracking, ICodeDescResponse.SUCCES_CODE, request.getRequestURI(),
                                     genericResp.toString(), signaletiqueRequest.toString(), genericResp.getResponseReference());
-                        } else if (obj.toString().contains("RCOD") && 
-                        (obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONObject && obj.getJSONObject("dmrt_signaletique_details").getJSONObject("client").getString("RCOD").equals("0413")||
-                        obj.getJSONObject("dmrt_signaletique_details").get("client") instanceof JSONArray && obj.getJSONObject("dmrt_signaletique_details").getJSONArray("client").getJSONObject(0).getString("RCOD").equals("0413"))
+                        } else if (obj.toString().contains("RCOD") && !obj.getJSONObject("data").isNull("RCOD") && 
+                        (obj.getJSONObject("data").getString("RCOD").equals("0413"))
                         ) {
                             genericResp.setCode(ICodeDescResponse.CLIENT_ABSENT_CODE);
                             genericResp.setDateResponse(Instant.now());
@@ -221,7 +219,7 @@ public class ApiService {
                     }
         
                 } catch (Exception e) {
-                    log.error("Exception in byRefRequest [{}]", e);
+                    log.error("Exception in getInfosSignaletiquesClient [{}]", e);
                     genericResp.setCode(ICodeDescResponse.ECHEC_CODE);
                     genericResp.setDateResponse(Instant.now());
                     genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION + " " + e.getMessage());
