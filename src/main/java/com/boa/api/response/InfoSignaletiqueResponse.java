@@ -4,33 +4,34 @@ import java.util.Map;
 
 public class InfoSignaletiqueResponse extends GenericResponse{
     
-    private Map<String, Object> dataSignaletique;
+    private Data data;
 
     public InfoSignaletiqueResponse() {
     }
+    
 
-    public InfoSignaletiqueResponse(Map<String,Object> dataSignaletique) {
-        this.dataSignaletique = dataSignaletique;
+
+    public InfoSignaletiqueResponse(Data data) {
+        this.data = data;
     }
 
-    public Map<String,Object> getDataSignaletique() {
-        return this.dataSignaletique;
+    public Data getData() {
+        return this.data;
     }
 
-    public void setDataSignaletique(Map<String,Object> dataSignaletique) {
-        this.dataSignaletique = dataSignaletique;
+    public void setData(Data data) {
+        this.data = data;
     }
 
-    public InfoSignaletiqueResponse dataSignaletique(Map<String,Object> dataSignaletique) {
-        setDataSignaletique(dataSignaletique);
+    public InfoSignaletiqueResponse data(Data data) {
+        setData(data);
         return this;
     }
 
     @Override
     public String toString() {
         return "{" +
-            " dataSignaletique='" + getDataSignaletique() + "'" +
+            " data='" + getData() + "'" +
             "}";
     }
-    
 }

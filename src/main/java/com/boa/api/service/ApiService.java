@@ -12,6 +12,8 @@ import com.boa.api.domain.ParamEndpoint;
 import com.boa.api.domain.Tracking;
 import com.boa.api.request.InfoSignaletiqueRequest;
 import com.boa.api.request.RatingRequest;
+import com.boa.api.response.Account;
+import com.boa.api.response.Data;
 import com.boa.api.response.InfoSignaletiqueResponse;
 import com.boa.api.response.RatingResponse;
 import com.boa.api.service.utils.ICodeDescResponse;
@@ -170,22 +172,70 @@ public class ApiService {
                         }
                         log.info("resp signaletique ===== [{}]", result);
                         obj = new JSONObject(result);
-                        ObjectMapper mapper = new ObjectMapper();
-                        Map<String, Object> map = mapper.readValue(result, Map.class);
+                        //ObjectMapper mapper = new ObjectMapper();
+                        //Map<String, Object> map = mapper.readValue(result, Map.class);
                         obj = new JSONObject(result);
-                        genericResp.setDataSignaletique(map);
-                        
+                        //genericResp.setDataSignaletique(map);
+                        Data  data = new Data();
                         if (obj.toString().contains("RCOD") && !obj.getJSONObject("data").isNull("RCOD") && 
                         (obj.getJSONObject("data").getString("RCOD").equals("0412"))
                         ) {
                             genericResp.setCode(ICodeDescResponse.SUCCES_CODE);
                             genericResp.setDescription(ICodeDescResponse.SUCCES_DESCRIPTION);
                             genericResp.setDateResponse(Instant.now());
+                            data
+                            .adresse(obj.getJSONObject("data").getString("ADRESSE"))
+                            .civilite(obj.getJSONObject("data").getString("CIVILITE"))
+                            .client(obj.getJSONObject("data").getString("CLIENT"))
+                            .dateNaissance(obj.getJSONObject("data").getString("DATE_NAISSANCE"))
+                            .identite(obj.getJSONObject("data").getString("IDENTITE"))
+                            .naturePersonne(obj.getJSONObject("data").getString("NATURE_PERSONNE"))
+                            .nom(obj.getJSONObject("data").getString("NOM"))
+                            .prenom(obj.getJSONObject("data").getString("PRENOM"))
+                            .profession(obj.getJSONObject("data").getString("PROFESSION"))
+                            .rcod(obj.getJSONObject("data").getString("RCOD"))
+                            .rmsg(obj.getJSONObject("data").getString("RMSG"))
+                            .secteurActivite(obj.getJSONObject("data").getString("SECTEUR_ACTIVITE"))
+                            .situationFamiliale(obj.getJSONObject("data").getString("SITUATION_FAMILIALE"))
+                            .telephone(obj.getJSONObject("data").getString("TELEPHONE"))
+                            .typeClient(obj.getJSONObject("data").getString("TYPE_CLIENT"))
+                            .ville(obj.getJSONObject("data").getString("VILLE"))
+                            .email(obj.getJSONObject("data").getString("PORTEUR_EMAIL"))
+                            .telGsm(obj.getJSONObject("data").getString("PORTEUR_TELPORT"))
+                            ;
+                            Account account = null;
+                            if(obj.getJSONObject("data").getJSONObject("accounts_details").get("account") instanceof JSONArray) {
+                                for (int i = 0; i < obj.getJSONObject("data").getJSONObject("accounts_details").getJSONArray("account").length(); i++) {
+                                    account = new Account();
+                                account
+                                .agence(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONArray("account").getJSONObject(i).getString("AGENCE"))
+                                .agenceLib(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONArray("account").getJSONObject(i).getString("AGENCELIB"))
+                                .compte(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONArray("account").getJSONObject(i).getString("COMPTE"))
+                                .dateOuverture(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONArray("account").getJSONObject(i).getString("DATOUVERTURE"))
+                                ;
+                                data.getAccounts().add(account);
+                                }
+                            }else {
+                                account = new Account();
+                                account
+                                .agence(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONObject("account").getString("AGENCE"))
+                                .agenceLib(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONObject("account").getString("AGENCELIB"))
+                                .compte(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONObject("account").getString("COMPTE"))
+                                .dateOuverture(obj.getJSONObject("data").getJSONObject("accounts_details").getJSONObject("account").getString("DATOUVERTURE"))
+                                ;
+                                data.getAccounts().add(account);
+                            }
+
+                            genericResp.data(data);
                             tracking = createTracking(tracking, ICodeDescResponse.SUCCES_CODE, request.getRequestURI(),
                                     genericResp.toString(), signaletiqueRequest.toString(), genericResp.getResponseReference());
                         } else if (obj.toString().contains("RCOD") && !obj.getJSONObject("data").isNull("RCOD") && 
                         (obj.getJSONObject("data").getString("RCOD").equals("0413"))
                         ) {
+                            data
+                            .rcod(obj.getJSONObject("data").getString("RCOD"))
+                            .rmsg(obj.getJSONObject("data").getString("RMSG"));
+                            genericResp.data(data);
                             genericResp.setCode(ICodeDescResponse.CLIENT_ABSENT_CODE);
                             genericResp.setDateResponse(Instant.now());
                             genericResp.setDescription(ICodeDescResponse.CLIENT_NON_TROUVE);
@@ -207,13 +257,13 @@ public class ApiService {
                         }
                         log.info("resp envoi error ===== [{}]", result);
                         obj = new JSONObject(result);
-                        ObjectMapper mapper = new ObjectMapper();
-                        Map<String, Object> map = mapper.readValue(result, Map.class);
+                        //ObjectMapper mapper = new ObjectMapper();
+                        //Map<String, Object> map = mapper.readValue(result, Map.class);
                         obj = new JSONObject(result);
-                        genericResp.setDataSignaletique(map);
+                        //genericResp.setDataSignaletique(map);
                         genericResp.setCode(ICodeDescResponse.ECHEC_CODE);
-                        genericResp.setDateResponse(Instant.now());
-                        genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION);
+                        genericResp.setDateResponse(Instant.now()); 
+                        genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION+result);
                         tracking = createTracking(tracking, ICodeDescResponse.ECHEC_CODE, request.getRequestURI(),
                                 genericResp.toString(), signaletiqueRequest.toString(), genericResp.getResponseReference());
                     }
