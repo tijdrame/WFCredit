@@ -263,7 +263,7 @@ public class ApiService {
                         //genericResp.setDataSignaletique(map);
                         genericResp.setCode(ICodeDescResponse.ECHEC_CODE);
                         genericResp.setDateResponse(Instant.now()); 
-                        genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION+result);
+                        genericResp.setDescription(ICodeDescResponse.ECHEC_DESCRIPTION);
                         tracking = createTracking(tracking, ICodeDescResponse.ECHEC_CODE, request.getRequestURI(),
                                 genericResp.toString(), signaletiqueRequest.toString(), genericResp.getResponseReference());
                     }
