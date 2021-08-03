@@ -256,10 +256,10 @@ public class ApiService {
                             ligne = br.readLine();
                         }
                         log.info("resp envoi error ===== [{}]", result);
-                        obj = new JSONObject(result);
+                        //obj = new JSONObject(result);
                         //ObjectMapper mapper = new ObjectMapper();
                         //Map<String, Object> map = mapper.readValue(result, Map.class);
-                        obj = new JSONObject(result);
+                        //obj = new JSONObject(result);
                         //genericResp.setDataSignaletique(map);
                         genericResp.setCode(ICodeDescResponse.ECHEC_CODE);
                         genericResp.setDateResponse(Instant.now()); 
